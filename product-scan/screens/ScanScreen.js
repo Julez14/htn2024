@@ -1,12 +1,11 @@
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import Camera from "../components/Camera";
 
-export default function HomeScreen(props) {
+export default function ScanScreen(props) {
   return (
     <View style={styles.container}>
-      <View>
-        <Text>this is the scan screen</Text>
-      </View>
+      <Camera navigation={props.navigation} />
     </View>
   );
 }
@@ -16,7 +15,5 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
     backgroundColor: "#FAF9F6",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
   },
 });

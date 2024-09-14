@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,22 +13,28 @@ import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 
 export default function HomeScreen(props) {
-  const data = useQuery(api.data.get);
-  const [scan, setScan] = useState([]);
+  // Fetch data directly using useQuery
+  const data = useQuery(api.dataGet.get);
 
-  const loadData = async () => {
-    setScan(data);
-  };
+  //loading state to handle loading
+  const [isFocused, setIsFocused] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
+  // React to component focus changes
   useFocusEffect(
     React.useCallback(() => {
-      loadData();
+      setIsFocused(true);
+      return () => setIsFocused(false);
     }, [])
   );
+
+  // If the data is still loading or not available, handle that scenario
+  if (!data) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headerText}>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -38,7 +44,7 @@ export default function HomeScreen(props) {
 
       <FlatList
         style={styles.scanList}
-        data={scan}
+        data={data}
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
