@@ -5,16 +5,23 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import ScanScreen from "./screens/ScanScreen";
 import ScanInfoScreen from "./screens/ScanInfoScreen";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL, {
+  unsavedChangesWarning: false,
+});
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Scan Info" component={ScanInfoScreen} />
-        <Stack.Screen name="Scan" component={ScanScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ConvexProvider client={convex}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Scan Info" component={ScanInfoScreen} />
+          <Stack.Screen name="Scan" component={ScanScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ConvexProvider>
   );
 }

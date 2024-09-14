@@ -9,13 +9,15 @@ import {
 } from "react-native";
 import ScanCell from "../components/ScanCell";
 import { useFocusEffect } from "@react-navigation/native";
+import { useQuery } from "convex/react";
+import { api } from "../convex/_generated/api";
 
 export default function HomeScreen(props) {
-  const data = require("../testData.json");
+  const data = useQuery(api.data.get);
   const [scan, setScan] = useState([]);
 
   const loadData = async () => {
-    setScan(data.data);
+    setScan(data);
   };
 
   useEffect(() => {
