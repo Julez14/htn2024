@@ -1,12 +1,15 @@
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import ScanCell from "../components/ScanCell";
 
-export default function HomeScreen(props) {
+export default function ScanInfoScreen(props) {
   return (
     <View style={styles.container}>
-      <View>
-        <Text>this is the scan info screen</Text>
-      </View>
+      <ScanCell
+        name={props.route.params.name}
+        brand={props.route.params.brand}
+        time={props.route.params.time}
+      />
     </View>
   );
 }

@@ -7,9 +7,26 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
+import ScanCell from "../components/ScanCell";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function HomeScreen(props) {
   const data = require("../testData.json");
+  const [scan, setScan] = useState([]);
+
+  const loadData = async () => {
+    setScan(data.data);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadData();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -19,7 +36,7 @@ export default function HomeScreen(props) {
 
       <FlatList
         style={styles.scanList}
-        data={data}
+        data={scan}
         renderItem={({ item }) => (
           <Pressable
             onPress={() =>
@@ -34,6 +51,7 @@ export default function HomeScreen(props) {
             <ScanCell name={item.name} brand={item.brand} time={item.time} />
           </Pressable>
         )}
+        keyExtractor={(item) => item.key.toString()}
       />
 
       <Button title="Scan" onPress={() => props.navigation.navigate("Scan")} />
