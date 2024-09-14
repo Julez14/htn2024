@@ -1,13 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  FlatList,
+  Pressable,
+} from "react-native";
 
 export default function HomeScreen(props) {
+  const data = require("../testData.json");
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>My Scans</Text>
       </View>
-      <Button title="Scan" />
+
+      <FlatList
+        style={styles.scanList}
+        data={data}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() =>
+              props.navigation.navigate("Scan Info", {
+                name: item.name,
+                brand: item.brand,
+                time: item.time,
+                ingredients: item.ingredients,
+              })
+            }
+          >
+            <ScanCell name={item.name} brand={item.brand} time={item.time} />
+          </Pressable>
+        )}
+      />
+
+      <Button title="Scan" onPress={() => props.navigation.navigate("Scan")} />
     </View>
   );
 }
