@@ -16,7 +16,18 @@ export default function App() {
   return (
     <ConvexProvider client={convex}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "#FA824C",
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold",
+            },
+          }}
+        >
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Scan Info" component={ScanInfoScreen} />
           <Stack.Screen name="Scan" component={ScanScreen} />

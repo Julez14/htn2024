@@ -56,7 +56,7 @@ export default function Camera({ navigation }) {
       });
       setImage(data);
       const imageText = await extractText(data);
-      getDescriptions(imageText);
+      getDescriptions(imageText, data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -64,7 +64,7 @@ export default function Camera({ navigation }) {
     }
   };
 
-  const getDescriptions = async (text) => {
+  const getDescriptions = async (text, imageData) => {
     const chatGptResponse = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -90,7 +90,7 @@ export default function Camera({ navigation }) {
     const descriptions = chatGptResponse.data.choices[0].message.content;
     const ingedientsJSON = organizeResponse(descriptions);
     console.log(ingedientsJSON);
-    updateData(ingedientsJSON);
+    updateData(ingedientsJSON, imageData);
   };
 
   function organizeResponse(text) {
@@ -152,23 +152,32 @@ export default function Camera({ navigation }) {
     }
   };
 
-  const updateData = async (newIngredients) => {
+  const updateData = async (newIngredients, imageData) => {
+    // Ensure image is not null before proceeding
+    if (!imageData) {
+      console.error("Image is not available.");
+      return;
+    }
+
     try {
       console.log("Existing Data:", existingData);
       // If existingData is not null or undefined, use it directly; otherwise, initialize with an empty structure
       const updatedData = existingData ? existingData : [];
 
       // Create the new entry
+      const now = new Date();
+      const formattedDateTime = now
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
       const newEntry = {
         key: updatedData.length, // Increment the key based on the length of the data array
         name: "",
         brand: "",
-        time: new Date().toISOString(),
+        time: formattedDateTime,
         ingredients: newIngredients, // This is passed as an argument
+        img: imageData.uri,
       };
-
-      // Append the new entry to the data array
-      updatedData.push(newEntry);
 
       // Call the mutation to insert the new data
       await addDataMutation(newEntry); // Use the mutation hook to add data
@@ -180,6 +189,7 @@ export default function Camera({ navigation }) {
         brand: newEntry.brand,
         time: newEntry.time,
         ingredients: newEntry.ingredients,
+        img: newEntry.img,
       });
     } catch (error) {
       console.error("Error appending data:", error);
@@ -194,12 +204,16 @@ export default function Camera({ navigation }) {
         )}
       </CameraView>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={toggleCameraFacing}>
-          <Text>Flip Camera</Text>
-        </Pressable>
-        <Pressable style={styles.button} onPress={handleCapture}>
-          <Text>Capture</Text>
-        </Pressable>
+        <Button
+          title={"Flip Camera"}
+          style={styles.button}
+          onPress={toggleCameraFacing}
+        />
+        <Button
+          title={"Capture"}
+          style={styles.button}
+          onPress={handleCapture}
+        />
       </View>
 
       {/* Loading Screen */}
@@ -239,17 +253,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: "row",
-    backgroundColor: "transparent",
+    flexDirection: "column",
     margin: 64,
+    justifyContent: "space-evenly",
   },
-  button: {
-    flexDirection: "row",
-    alignSelf: "center",
-    backgroundColor: "pink",
-    padding: 20,
-    margin: 20,
-  },
+  button: {},
   text: {
     fontSize: 24,
     fontWeight: "bold",

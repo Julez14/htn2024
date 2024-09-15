@@ -47,22 +47,32 @@ export default function HomeScreen(props) {
         data={data}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() =>
+            onPress={() => {
               props.navigation.navigate("Scan Info", {
                 name: item.name,
                 brand: item.brand,
                 time: item.time,
                 ingredients: item.ingredients,
-              })
-            }
+                img: item.img,
+              });
+            }}
           >
-            <ScanCell name={item.name} brand={item.brand} time={item.time} />
+            <ScanCell
+              name={item.name}
+              brand={item.brand}
+              time={item.time}
+              img={item.img}
+            />
           </Pressable>
         )}
         keyExtractor={(item) => item.key.toString()}
       />
 
-      <Button title="Scan" onPress={() => props.navigation.navigate("Scan")} />
+      <Button
+        title="Scan"
+        onPress={() => props.navigation.navigate("Scan")}
+        color={"#3C91E6"}
+      />
     </View>
   );
 }
@@ -71,7 +81,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "#FAFFFD",
     paddingVertical: 20,
     paddingHorizontal: 20,
   },
