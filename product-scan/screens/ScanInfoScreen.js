@@ -5,7 +5,6 @@ import ScanCell from "../components/ScanCell";
 export default function ScanInfoScreen(props) {
   return (
     <View style={styles.container}>
-      <Button title="Edit" style={styles.button} color={"#3C91E6"} />
       <ScanCell
         name={props.route.params.name}
         brand={props.route.params.brand}
