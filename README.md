@@ -1,10 +1,21 @@
-# htn2024
-Project submission for hack the north 2024.
-Final version pushed to 'best-practices' branch.
+# IngredientAI  
+**Hack the North 2024 Submission**  
 
-DevPost: https://devpost.com/juelzlax
+IngredientAI is a React Native app that uses **OpenAI GPT-4** and **computer vision** to analyze ingredient labels, providing users with detailed insights.  
 
-• Developed a React Native mobile app using OpenAI’s GPT-4 API and computer-vision capabilities to extract
-and analyze ingredient labels, generating detailed descriptions
-• Integrated Convex for cloud-based data storage and retrieval, and deployed the app via Expo for cross-platform
-functionality
+## Features  
+- **AI-Powered Analysis**: Extract and interpret ingredient labels.  
+- **Cloud Storage**: Powered by Convex for secure data management.  
+- **Cross-Platform**: Built and deployed with Expo for iOS and Android.  
+
+## Technologies  
+- React Native | OpenAI GPT-4 API | Convex | Expo  
+
+## How It Works  
+1. Scan ingredient labels.  
+2. AI generates detailed descriptions.  
+3. Data is securely stored in the cloud.  
+
+## Links  
+- **DevPost**: [IngredientAI](https://devpost.com/juelzlax)  
+- **Branch**: `best-practices`
